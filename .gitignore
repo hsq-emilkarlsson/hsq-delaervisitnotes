@@ -1,10 +1,8 @@
-# n8n workflow files (contains credentials and API keys)
+# n8n workflow file (contains credentials and API keys)
 n8n.json
-n8n.fixed.json
 
-# Databricks credentials and setup docs
+# Databricks setup documentation
 DATABRICKS_SETUP.md
-DATABRICKS_CREDENTIALS.md
 
 # Token generator (only for local use)
 generate-token.html
