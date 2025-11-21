@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Visit Notes - Husqvarna Group</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 48px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .notice-box {
+            background: #e8f4fd;
+            border: 1px solid #b3d9f2;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .notice-title {
+            color: #0066cc;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .notice-text {
+            color: #333;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .notice-text a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .notice-text a:hover {
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #ff6600;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            font-size: 18px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #d0d0d0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: not-allowed;
+            transition: background-color 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        button.active {
+            background: #ff6600;
+            cursor: pointer;
+        }
+
+        button.active:hover {
+            background: #e65c00;
+        }
+
+        .footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="https://portal.husqvarnagroup.com/static/b2b/assets/with-name.2c359503.svg" alt="Husqvarna Group" class="logo">
+            <h1>CUSTOMER VISIT NOTES</h1>
+        </div>
+
+        <div id="error-message" class="error"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="password">Access Token</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        placeholder="Enter your access token"
+                        autocomplete="off"
+                    >
+                    <span class="toggle-password" onclick="togglePassword()">👁</span>
+                </div>
+            </div>
+
+            <button type="submit" id="submit-btn" disabled>ACCESS PORTAL</button>
+        </form>
+
+        <div class="footer">
+            Husqvarna Group - Customer Visit Notes Portal<br>
+            Contact emil.karlsson@husqvarnagroup.com for access support
+        </div>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submit-btn');
+        const errorMessage = document.getElementById('error-message');
+        const form = document.getElementById('login-form');
+
+        // Enable/disable button based on input
+        passwordInput.addEventListener('input', function() {
+            if (this.value.length > 0) {
+                submitBtn.disabled = false;
+                submitBtn.classList.add('active');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('active');
+            }
+            errorMessage.style.display = 'none';
+        });
+
+        // Toggle password visibility
+        function togglePassword() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+        }
+
+        // SHA-256 hash function
+        async function hashToken(token) {
+            const msgBuffer = new TextEncoder().encode(token);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Valid access token hashes (add more as needed)
+        // To generate a new hash: console.log(await hashToken('your-token-here'))
+        const validTokenHashes = [
+            '32681a44dc5d322ad33b99f2ebbb411b1f17ec90035a9b69eeb69e35262f0a0f',
+            // Add more hashes here for additional access tokens
+        ];
+
+        // Handle form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'VALIDATING...';
+            
+            const token = passwordInput.value.trim();
+            const tokenHash = await hashToken(token);
+            
+            if (validTokenHashes.includes(tokenHash)) {
+                // Store authentication in sessionStorage (expires when browser closes)
+                sessionStorage.setItem('hsq_auth', tokenHash);
+                sessionStorage.setItem('hsq_auth_time', Date.now());
+                
+                submitBtn.textContent = 'ACCESS GRANTED';
+                window.location.href = 'form.html';
+            } else {
+                errorMessage.textContent = 'Invalid access token. Please contact support for a valid token.';
+                errorMessage.style.display = 'block';
+                passwordInput.value = '';
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('active');
+                submitBtn.textContent = 'ACCESS PORTAL';
+            }
+        });
+
+        // Allow Enter key to submit when password is entered
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.length > 0) {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>

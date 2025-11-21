@@ -1,0 +1,30 @@
+# n8n workflow files (contains credentials and API keys)
+n8n.json
+n8n.fixed.json
+
+# Databricks credentials and setup docs
+DATABRICKS_SETUP.md
+DATABRICKS_CREDENTIALS.md
+
+# Token generator (only for local use)
+generate-token.html
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Any credential or config files
+*credentials*
+*secrets*
+*.key
+*.pem
