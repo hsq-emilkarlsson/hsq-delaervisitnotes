@@ -4,7 +4,7 @@ Husqvarna Group internal portal for documenting customer visit notes.
 
 ## 🌐 Live Portal
 
-Access the portal at: `https://YOUR-USERNAME.github.io/REPO-NAME/login.html`
+Access the portal at: [https://hsq-emilkarlsson.github.io/hsq-delaervisitnotes/login.html](https://hsq-emilkarlsson.github.io/hsq-delaervisitnotes/login.html)
 
 ## 🔐 Access
 
